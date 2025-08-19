@@ -46,6 +46,7 @@ const distance = (x1, y1, x2, y2) =>
 const Canvas = () => {
   const {
     activeTool,
+    setActiveTool,
     shapes,
     setShapes,
     drawing,
@@ -54,6 +55,7 @@ const Canvas = () => {
     setSelectedShape,
     defaultStyle,
     setDefaultstyle,
+    styleshape,setStyleShape,
   } = useTool();
   const canvasRef = useRef(null);
 
@@ -276,12 +278,30 @@ const Canvas = () => {
         offsetY = y - selectedElement.y1;
       }
       setSelectedShape({ ...selectedElement, offsetX, offsetY });
+       setStyleShape(selectedElement)
     }
-  } else {
+  } else if (activeTool==="eraser"){
+
+     const selectedElement = selectionChecker(x, y);
+     if (selectedElement){
+      setShapes((prev)=>prev.filter((obj)=>obj.id!==selectedElement.id))
+     }
+
+
+
+
+  }else 
+   {
     setDrawing(true);
+    
     const id = Date.now();
     const newShape = generateShape(id, x, y, x, y, activeTool, defaultStyle);
-    if (newShape) setShapes((prev) => [...prev, newShape]);
+    
+    if (newShape) {
+      setShapes((prev) => [...prev, newShape])
+      
+
+    };
   }
 };
 
@@ -338,13 +358,18 @@ const Canvas = () => {
       shapesCopy[index] = { ...currentShape, x2: x, y2: y };
     }
     setShapes(shapesCopy);
+    setStyleShape(currentShape)
   }
 };
 
 
   const handleMouseUp = () => {
     setDrawing(false);
+    if (activeTool !=="eraser"){setActiveTool("select")}
+    
+     
     setSelectedShape();
+    
   };
 
   console.log(shapes);

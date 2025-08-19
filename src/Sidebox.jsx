@@ -92,7 +92,7 @@ const PaletteIcon = () => (
 
 
 const Sidebox = () => {
-  const { shapes, setShapes, selectedShape, setDefaultstyle } = useTool();
+  const { shapes, setShapes, styleshape, setStyleShape,defaultStyle,setDefaultstyle } = useTool();
 
   // Refs for the hidden color input fields
   const customStrokeColorInputRef = useRef(null);
@@ -100,13 +100,13 @@ const Sidebox = () => {
 
 
 
-  if (!selectedShape) return null;
+  if (!styleshape) return null;
 
 
   const updateShape = (updates) => {
     setShapes((prev) =>
       prev.map((shape) =>
-        shape.id === selectedShape.id ? { ...shape, ...updates } : shape
+        shape.id === styleshape.id ? { ...shape, ...updates } : shape
       )
     );
     setDefaultstyle((prev) => ({ ...prev, ...updates }));
@@ -135,7 +135,7 @@ const Sidebox = () => {
               onClick={() => updateShape({ stroke: color })}
               aria-label={`Color ${color}`}
               className={`w-5 h-5 rounded-full  transition-transform transform hover:scale-102 focus:outline-none ${
-                selectedShape.stroke === color
+                defaultStyle.stroke === color
                   ? "ring-1 ring-offset-2 ring-[#e0dfff]"
                   : "ring-0"
               }`}
@@ -152,7 +152,7 @@ const Sidebox = () => {
               type="color"
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               onChange={(e) => updateShape({ stroke: e.target.value })}
-              value={selectedShape.stroke}
+              value={styleshape.stroke}
             />
           </div>
         </div>
@@ -170,7 +170,7 @@ const Sidebox = () => {
               onClick={() => updateShape({ background: color })}
               aria-label={`Color ${color}`}
               className={`w-5 h-5 rounded-full  transition-transform transform hover:scale-102 focus:outline-none ${
-                selectedShape.background === color
+                defaultStyle.background === color
                   ? "ring-1 ring-offset-2 ring-[#e0dfff]"
                   : "ring-0"
               } ${color === "transparent" ? "bg-white" : ""}`}
@@ -200,7 +200,7 @@ const Sidebox = () => {
               type="color"
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               onChange={(e) => updateShape({ background: e.target.value })}
-              value={selectedShape.stroke}
+              value={styleshape.stroke}
             />
           </div>
         </div>
@@ -218,7 +218,7 @@ const Sidebox = () => {
               title={label}
               onClick={() => updateShape({ strokeWidth: value })}
               className={`p-1 rounded-md transition-colors  ${
-                selectedShape.strokeWidth === value
+                defaultStyle.strokeWidth === value
                   ? "bg-[#e0dfff] text-black"
                   : "bg-[#f6f6f9] text-gray-600 "
               }`}
@@ -241,7 +241,7 @@ const Sidebox = () => {
               title={label}
               onClick={() => updateShape({ strokeStyle: value })}
               className={`p-1 rounded-md ${
-                selectedShape.strokeStyle === value
+                defaultStyle.strokeStyle === value
                  ? "bg-[#e0dfff] text-black"
                   : "bg-[#f6f6f9] text-gray-600 "
               }`}

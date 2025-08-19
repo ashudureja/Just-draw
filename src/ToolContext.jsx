@@ -16,9 +16,10 @@ export const ToolProvider = ({ children }) => {
   strokeStyle: "solid", 
 
 })
+const [styleshape,setStyleShape]=useState()
 
   return (
-    <ToolContext.Provider value={{ activeTool, setActiveTool,shapes,setShapes ,drawing,setDrawing,selectedShape,setSelectedShape,defaultStyle,setDefaultstyle}}>
+    <ToolContext.Provider value={{ activeTool, setActiveTool,shapes,setShapes ,drawing,setDrawing,selectedShape,setSelectedShape,defaultStyle,setDefaultstyle,styleshape,setStyleShape}}>
       {children}
     </ToolContext.Provider>
   );
