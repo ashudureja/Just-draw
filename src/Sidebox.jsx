@@ -42,7 +42,7 @@ const STROKE_STYLE_OPTIONS = [
   { value: "dotted", label: "Dotted" },
 ];
 
-// --- SVG ICONS ---
+
 const StrokeWidthIcon = ({ width }) => (
   <svg
     width="24"
@@ -92,160 +92,79 @@ const PaletteIcon = () => (
 
 
 const Sidebox = () => {
-  const { shapes, setShapes, styleshape, setStyleShape,defaultStyle,setDefaultstyle } = useTool();
-
-  // Refs for the hidden color input fields
-  const customStrokeColorInputRef = useRef(null);
-  const customBackgroundColorInputRef = useRef(null);
-
-
-
+ 
+  const { shapes, setShapes, styleshape, defaultStyle, setDefaultstyle, updateHistory } = useTool();
+  
   if (!styleshape) return null;
 
 
   const updateShape = (updates) => {
-    setShapes((prev) =>
-      prev.map((shape) =>
-        shape.id === styleshape.id ? { ...shape, ...updates } : shape
-      )
+   
+    const newShapes = shapes.map((shape) =>
+      shape.id === styleshape.id ? { ...shape, ...updates } : shape
     );
-    setDefaultstyle((prev) => ({ ...prev, ...updates }));
-  };
 
-  // Helper function to check if a color is one of the preset options
-  const isCustomColor = (color, options) => {
-    return !options.includes(color) && color !== "transparent";
+    
+    setShapes(newShapes);
+
+
+    updateHistory(newShapes);
+
+    setDefaultstyle((prev) => ({ ...prev, ...updates }));
   };
 
   return (
     <div className="absolute top-1/2 -translate-y-1/2 left-4 z-[999] bg-white rounded-xl shadow-lg border border-gray-200 p-4 w-64 flex flex-col gap-4">
-      <h3 className="text-sm font-bold text-gray-800 border-b pb-2">
-        Styling Options
-      </h3>
+      <h3 className="text-sm font-bold text-gray-800 border-b pb-2">Styling Options</h3>
 
-      {/* --- Stroke Color --- */}
+      {/* Stroke Color */}
       <div>
-        <h4 className="text-xs font-semibold text-gray-500 mb-2">
-          Stroke Color
-        </h4>
+        <h4 className="text-xs font-semibold text-gray-500 mb-2">Stroke Color</h4>
         <div className="flex flex-wrap gap-2 items-center">
           {STROKE_COLOR_OPTIONS.map((color) => (
-            <button
-              key={color}
-              onClick={() => updateShape({ stroke: color })}
-              aria-label={`Color ${color}`}
-              className={`w-5 h-5 rounded-full  transition-transform transform hover:scale-102 focus:outline-none ${
-                defaultStyle.stroke === color
-                  ? "ring-1 ring-offset-2 ring-[#e0dfff]"
-                  : "ring-0"
-              }`}
-              style={{
-                backgroundColor: color,
-              }}
-            />
+            <button key={color} onClick={() => updateShape({ stroke: color })} className={`w-5 h-5 rounded-full transition-transform transform hover:scale-105 ${ defaultStyle.stroke === color ? "ring-1 ring-offset-2 ring-violet-300" : "" }`} style={{ backgroundColor: color }} />
           ))}
-
-          <div className="relative w-5 h-5 flex items-center justify-center">
-           <PiPaletteLight className="text-3xl" />
-            <input
-              ref={customStrokeColorInputRef}
-              type="color"
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              onChange={(e) => updateShape({ stroke: e.target.value })}
-              value={styleshape.stroke}
-            />
+          <div className="relative w-6 h-6 flex items-center justify-center">
+            <PaletteIcon />
+            <input type="color" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onChange={(e) => updateShape({ stroke: e.target.value })} value={styleshape.stroke || '#000000'} />
           </div>
         </div>
       </div>
 
-      {/* --- Background Color --- */}
+      {/* Background Color */}
       <div>
-        <h4 className="text-xs font-semibold text-gray-500 mb-2">
-          Background Color
-        </h4>
+        <h4 className="text-xs font-semibold text-gray-500 mb-2">Background Color</h4>
         <div className="flex flex-wrap gap-2 items-center">
           {BACKGROUND_COLOR_OPTIONS.map((color) => (
-            <button
-              key={color}
-              onClick={() => updateShape({ background: color })}
-              aria-label={`Color ${color}`}
-              className={`w-5 h-5 rounded-full  transition-transform transform hover:scale-102 focus:outline-none ${
-                defaultStyle.background === color
-                  ? "ring-1 ring-offset-2 ring-[#e0dfff]"
-                  : "ring-0"
-              } ${color === "transparent" ? "bg-white" : ""}`}
-              style={{
-                backgroundColor: color,
-              }}
-            >
-              {color === "transparent" && (
-                <div className="w-5 h-5 rounded-full  border border-[#e0dfff]"><svg viewBox="0 0 100 100" className="w-full h-full">
-                  <line
-                    x1="0"
-                    y1="100"
-                    x2="100"
-                    y2="0"
-                    stroke="#ef4444"
-                    strokeWidth="5"
-                  />
-                </svg></div>
-              )}
+            <button key={color} onClick={() => updateShape({ background: color })} className={`w-5 h-5 rounded-full transition-transform transform hover:scale-105 ${ defaultStyle.background === color ? "ring-1 ring-offset-2 ring-violet-300" : "" } ${color === "transparent" ? "bg-white border-2 border-gray-200" : ""}`} style={{ backgroundColor: color }} >
+              {color === "transparent" && <svg viewBox="0 0 100 100" className="w-full h-full"><line x1="0" y1="100" x2="100" y2="0" stroke="#ef4444" strokeWidth="5" /></svg>}
             </button>
           ))}
-
-          <div className="relative w-5 h-5 flex items-center justify-center">
-          <PiPaletteLight className="text-3xl" />
-            <input
-              ref={customStrokeColorInputRef}
-              type="color"
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              onChange={(e) => updateShape({ background: e.target.value })}
-              value={styleshape.stroke}
-            />
+          <div className="relative w-6 h-6 flex items-center justify-center">
+            <PaletteIcon />
+            <input type="color" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onChange={(e) => updateShape({ background: e.target.value })} value={styleshape.background || '#FFFFFF'} />
           </div>
         </div>
       </div>
 
-      {/* --- Stroke Width --- */}
+      {/* Stroke Width */}
       <div>
-        <h4 className="text-xs font-semibold text-gray-500 mb-2">
-          Stroke Width
-        </h4>
+        <h4 className="text-xs font-semibold text-gray-500 mb-2">Stroke Width</h4>
         <div className="flex gap-2 items-center">
           {STROKE_WIDTH_OPTIONS.map(({ value, label }) => (
-            <button
-              key={value}
-              title={label}
-              onClick={() => updateShape({ strokeWidth: value })}
-              className={`p-1 rounded-md transition-colors  ${
-                defaultStyle.strokeWidth === value
-                  ? "bg-[#e0dfff] text-black"
-                  : "bg-[#f6f6f9] text-gray-600 "
-              }`}
-            >
+            <button key={value} title={label} onClick={() => updateShape({ strokeWidth: value })} className={`p-1 rounded-md transition-colors ${ defaultStyle.strokeWidth === value ? "bg-violet-100 text-violet-600" : "bg-gray-100 text-gray-600" }`} >
               <StrokeWidthIcon width={value} />
             </button>
           ))}
         </div>
       </div>
 
-      {/* --- Stroke Style --- */}
+      {/* Stroke Style */}
       <div>
-        <h4 className="text-xs font-semibold text-gray-500 mb-2">
-          Stroke Style
-        </h4>
+        <h4 className="text-xs font-semibold text-gray-500 mb-2">Stroke Style</h4>
         <div className="flex gap-2">
           {STROKE_STYLE_OPTIONS.map(({ value, label }) => (
-            <button
-              key={value}
-              title={label}
-              onClick={() => updateShape({ strokeStyle: value })}
-              className={`p-1 rounded-md ${
-                defaultStyle.strokeStyle === value
-                 ? "bg-[#e0dfff] text-black"
-                  : "bg-[#f6f6f9] text-gray-600 "
-              }`}
-            >
+            <button key={value} title={label} onClick={() => updateShape({ strokeStyle: value })} className={`p-1 rounded-md ${ defaultStyle.strokeStyle === value ? "bg-violet-100 text-violet-600" : "bg-gray-100 text-gray-600" }`} >
               <StrokeStyleIcon style={value} />
             </button>
           ))}
@@ -254,5 +173,6 @@ const Sidebox = () => {
     </div>
   );
 };
+
 
 export default Sidebox;

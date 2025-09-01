@@ -43,7 +43,7 @@ const Navbar = () => {
   return (
     <div className="w-full flex items-center fixed z-[999] justify-between p-4">
       <div></div>
-      <nav className="flex items-center gap-1 rounded-lg bg-white p-1 shadow-md border border-gray-200">
+      <nav className="flex items-center gap-1 rounded-lg bg-white p-1 shadow-lg border border-black/50">
         <ToolButton icon={Lock} />
         <ToolButton icon={Hand} />
         <div className="mx-1 h-6 w-px bg-gray-200" />
