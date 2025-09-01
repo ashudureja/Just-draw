@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Instagram, Facebook, X, Linkedin, Youtube ,Github} from "lucide-react";
 
 // The new SVG component for the decorative rainbow arches.
 // It's used for both sides; the left side is just a CSS-transformed version of this.
@@ -34,11 +35,21 @@ const Header = () => (
       <div className="text-2xl font-bold tracking-widest" style={{ fontFamily: "'Fredoka One', cursive" }}>
         ASHU
       </div>
-      {/* <nav className="hidden items-center space-x-8 md:flex">
-        <a href="#" className="font-semibold text-gray-800 hover:text-pink-500">About</a>
-        <a href="#" className="font-semibold text-gray-800 hover:text-pink-500">Speakers</a>
-        <a href="#" className="font-semibold text-gray-800 hover:text-pink-500">Activities</a>
-      </nav> */}
+      <div className="flex gap-3 sm:gap-4 flex-wrap justify-center">
+           <a href="https://www.linkedin.com/in/ashutosh-dureja-919072209/" className="bg-pink-200 cursor-pointer rounded-full p-2 sm:p-2.5 hover:bg-pink-200 transform transition-colors  duration-[0.4s] ease-out">
+            <Linkedin size={16} className="sm:w-[18px] sm:h-[18px]" />
+          </a>
+          <a href="https://www.instagram.com/ashudureja_/" className="rounded-full cursor-pointer bg-pink-200 p-2 sm:p-2.5 hover:bg-pink-200 transform transition-colors  duration-[0.4s] ease-out">
+            <Instagram size={16} className="sm:w-[18px]  sm:h-[18px]" />
+          </a>
+          <a href="https://github.com/ashudureja?tab=overview&from=2025-06-01&to=2025-06-30" className="bg-pink-200  cursor-pointer rounded-full p-2 sm:p-2.5 hover:bg-pink-200transform transition-colors  duration-[0.4s] ease-out">
+            <Github size={16} className="sm:w-[18px] sm:h-[18px]" />
+          </a>
+          <a href="https://www.linkedin.com/in/ashutosh-dureja-919072209/" className="bg-pink-200 cursor-pointer rounded-full p-2 sm:p-2.5 hover:bg-pink-200 transform transition-colors  duration-[0.4s] ease-out">
+            <X size={16} className="sm:w-[18px] sm:h-[18px]" />
+          </a>
+         
+        </div>
       <Link to="/justdraw" className="rounded-lg border-2 border-black bg-pink-300 px-6 py-2 font-semibold shadow-[4px_4px_0px_#000] transition-all hover:shadow-none hover:translate-x-1 hover:translate-y-1">
        Try For Free
       </Link>
